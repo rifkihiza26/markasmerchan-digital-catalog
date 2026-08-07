@@ -29,8 +29,10 @@ export function ProductSection({ limitPerCategory }: { limitPerCategory?: number
                     id={`cat-${cat.id}`}
                     className="font-sans text-[clamp(2rem,6.5vw,4rem)] font-bold uppercase leading-[0.95] tracking-tight"
                   >
-                    {cat.label.slice(0, -3)}
-                    <span className="font-serif italic lowercase">{cat.label.slice(-3)}</span>
+                    {cat.label}
+                    <span className="ml-3 font-serif text-[0.35em] italic lowercase tracking-normal">
+                      / collection
+                    </span>
                   </h2>
                   <p className="max-w-xs font-sans text-sm leading-relaxed">{cat.note}</p>
                 </div>
