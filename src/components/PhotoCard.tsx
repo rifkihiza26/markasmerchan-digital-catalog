@@ -26,7 +26,7 @@ export function PhotoCard({
 }) {
   return (
     <figure
-      className={cn("group inline-block", float && "float", className)}
+      className={cn("group block w-full", float && "float", className)}
       style={{ ["--rot" as string]: `${rot}deg`, transform: float ? undefined : `rotate(${rot}deg)` }}
     >
       <div className="hairline shadow-soft overflow-hidden bg-paper p-1">
