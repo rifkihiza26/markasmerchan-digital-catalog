@@ -5,22 +5,20 @@ export function Reveal({
   children,
   delay = 0,
   className,
-  as: Tag = "div",
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "section" | "li" | "figure" | "article";
 }) {
-  const ref = useRef<HTMLElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [seen, setSeen] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
           setSeen(true);
           io.disconnect();
         }
@@ -32,13 +30,12 @@ export function Reveal({
   }, []);
 
   return (
-    // @ts-expect-error polymorphic ref
-    <Tag
+    <div
       ref={ref}
       className={cn("reveal", seen && "is-in", className)}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
-    </Tag>
+    </div>
   );
 }
