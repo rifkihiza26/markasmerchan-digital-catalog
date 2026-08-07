@@ -6,7 +6,7 @@ import { BulkOrder } from "@/components/BulkOrder";
 import { Reveal } from "@/components/Reveal";
 import skyImg from "@/assets/sky.jpg";
 
-export const Route = createFileRoute("/products")({
+export const Route = createFileRoute("/products/")({
   head: () => ({
     meta: [
       { title: "Our Product — MarkasMerchan Custom Merch Catalog" },

@@ -80,7 +80,7 @@ function ProductDetail() {
                     <dd>
                       {product.specs.length ? (
                         <ul className="list-disc pl-4">
-                          {product.specs.map((s) => (
+                          {product.specs.map((s: string) => (
                             <li key={s}>{s}</li>
                           ))}
                         </ul>
