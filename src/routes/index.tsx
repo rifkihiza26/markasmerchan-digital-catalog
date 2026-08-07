@@ -1,24 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Hero } from "@/components/Hero";
+import { OneStopSection } from "@/components/OneStopSection";
+import { Marquee } from "@/components/Marquee";
+import { ProductSection } from "@/components/ProductSection";
+import { WhyMarkasMerchan } from "@/components/WhyMarkasMerchan";
+import { DesignConsultation } from "@/components/DesignConsultation";
+import { BulkOrder } from "@/components/BulkOrder";
+import { ProjectGallery } from "@/components/ProjectGallery";
+import { PartnerSection } from "@/components/PartnerSection";
+import { ContactSection } from "@/components/ContactSection";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "MarkasMerchan — Custom Merchandise & Apparel" },
+      {
+        name: "description",
+        content:
+          "Satu Tempat, Semua Kebutuhan Merch Lo. Custom merchandise & apparel untuk kampus, organisasi, event, corporate, dan komunitas.",
+      },
+      { property: "og:title", content: "MarkasMerchan — Custom Merchandise & Apparel" },
+      { property: "og:description", content: "Satu Tempat, Semua Kebutuhan Merch Lo." },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <Hero />
+      <Marquee>Satu tempat, semua kebutuhan merch lo</Marquee>
+      <OneStopSection />
+      <ProductSection limitPerCategory={4} />
+      <WhyMarkasMerchan />
+      <DesignConsultation />
+      <BulkOrder />
+      <ProjectGallery />
+      <PartnerSection />
+      <ContactSection />
+    </>
   );
 }

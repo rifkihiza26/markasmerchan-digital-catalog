@@ -1,0 +1,49 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { AboutSection } from "@/components/AboutSection";
+import { WhyMarkasMerchan } from "@/components/WhyMarkasMerchan";
+import { DesignConsultation } from "@/components/DesignConsultation";
+import { ProjectGallery } from "@/components/ProjectGallery";
+import { PartnerSection } from "@/components/PartnerSection";
+import { Marquee } from "@/components/Marquee";
+import { Reveal } from "@/components/Reveal";
+import skyImg from "@/assets/sky.jpg";
+
+export const Route = createFileRoute("/about")({
+  head: () => ({
+    meta: [
+      { title: "About Us — MarkasMerchan Merch Studio" },
+      {
+        name: "description",
+        content:
+          "MarkasMerchan adalah one stop solution custom merchandise & apparel untuk kampus, organisasi, event, corporate, dan komunitas.",
+      },
+      { property: "og:title", content: "About Us — MarkasMerchan" },
+      { property: "og:description", content: "One stop solution custom merchandise & apparel." },
+    ],
+  }),
+  component: AboutPage,
+});
+
+function AboutPage() {
+  return (
+    <>
+      <section className="relative isolate overflow-hidden px-4 pb-16 pt-36 sm:pt-40">
+        <img src={skyImg} alt="" aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover" />
+        <div className="grain absolute inset-0 -z-10" aria-hidden="true" />
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <h1 className="font-sans text-[clamp(2.4rem,9vw,6rem)] font-bold uppercase leading-[0.9] tracking-tight">
+              About <span className="marker font-serif italic lowercase">us</span>
+            </h1>
+          </Reveal>
+        </div>
+      </section>
+      <Marquee>Custom merchandise &amp; apparel</Marquee>
+      <AboutSection />
+      <WhyMarkasMerchan />
+      <DesignConsultation />
+      <ProjectGallery />
+      <PartnerSection />
+    </>
+  );
+}
