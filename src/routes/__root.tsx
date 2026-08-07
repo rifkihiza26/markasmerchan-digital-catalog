@@ -11,6 +11,10 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
+import { CustomCursor } from "@/components/CustomCursor";
+
 
 function NotFoundComponent() {
   return (
@@ -119,8 +123,20 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <CustomCursor />
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:border focus:border-foreground focus:bg-background focus:px-4 focus:py-2"
+      >
+        Lewati ke konten
+      </a>
+      <Navigation />
+      <main id="main">
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </main>
+      <Footer />
     </QueryClientProvider>
   );
 }
+
