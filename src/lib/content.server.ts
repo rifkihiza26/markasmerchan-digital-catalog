@@ -85,7 +85,6 @@ export async function loadProduct(slug: string): Promise<{
 
 export async function loadProjects(): Promise<PublicProject[]> {
   try {
-    const supabase = createPublicClient();
     const { data } = await createPublicClient()
       .from("projects")
       .select(
@@ -93,7 +92,6 @@ export async function loadProjects(): Promise<PublicProject[]> {
       )
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
-    void supabase;
     return (data ?? []) as PublicProject[];
   } catch (error) {
     console.error("[content] loadProjects failed", error);
