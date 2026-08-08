@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="12" fill="#FFFFFF"/>
+  <!-- Block M 1 (Red box, white text) -->
+  <g transform="translate(5, 12) rotate(-5 12 20)">
+    <rect width="25" height="38" fill="#FF3B4B" stroke="#121212" stroke-width="2.5" rx="2"/>
+    <text x="12.5" y="28" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="24" fill="#FFFFFF" text-anchor="middle">M</text>
+  </g>
+  <!-- Block M 2 (Yellow box, dark text) -->
+  <g transform="translate(32, 12) rotate(4 12 20)">
+    <rect width="25" height="38" fill="#FFE847" stroke="#121212" stroke-width="2.5" rx="2"/>
+    <text x="12.5" y="28" font-family="Times New Roman, serif" font-weight="900" font-style="italic" font-size="25" fill="#121212" text-anchor="middle">M</text>
+  </g>
+</svg>
