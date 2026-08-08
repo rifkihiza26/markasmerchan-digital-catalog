@@ -1,40 +1,59 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getProduct, CONTENT_NEEDED, productsByCategory } from "@/data/products";
-import { categories } from "@/data/categories";
 import { PhotoCard } from "@/components/PhotoCard";
 import { NoteCard } from "@/components/NoteCard";
 import { ProductCard } from "@/components/ProductCard";
-import { waLink } from "@/data/contact";
+import { PageError } from "@/components/PageError";
+import { getProductBySlug } from "@/lib/content.functions";
+import { CONTENT_NEEDED } from "@/lib/content-defaults";
+import { useWaLink } from "@/hooks/useSiteContext";
+import type { PublicProduct } from "@/lib/content-types";
 
 export const Route = createFileRoute("/products/$slug")({
-  loader: ({ params }) => {
-    const product = getProduct(params.slug);
-    if (!product) throw notFound();
-    return { product };
+  loader: async ({ params }) => {
+    const result = await getProductBySlug({ data: { slug: params.slug } });
+    if (!result) throw notFound();
+    return result;
   },
   head: ({ loaderData }) => {
-    const name = loaderData?.product.name ?? "Product";
+    if (!loaderData) {
+      return {
+        meta: [{ title: "Produk tidak ditemukan — MarkasMerchan" }, { name: "robots", content: "noindex" }],
+      };
+    }
+    const { product } = loaderData;
+    const description =
+      product.short_description ??
+      product.description ??
+      `${product.name} custom dari MarkasMerchan. Konsultasi gratis untuk kebutuhan kampus, organisasi, event, corporate, dan komunitas.`;
     return {
       meta: [
-        { title: `${name} — MarkasMerchan Custom Merch` },
-        {
-          name: "description",
-          content: `${name} custom dari MarkasMerchan. Konsultasi gratis untuk kebutuhan kampus, organisasi, event, corporate, dan komunitas.`,
-        },
-        { property: "og:title", content: `${name} — MarkasMerchan` },
-        { property: "og:description", content: `${name} custom dari MarkasMerchan.` },
+        { title: `${product.name} | MarkasMerchan` },
+        { name: "description", content: description },
+        { property: "og:title", content: `${product.name} | MarkasMerchan` },
+        { property: "og:description", content: description },
+        ...(product.featured_image
+          ? [
+              { property: "og:image", content: product.featured_image },
+              { name: "twitter:image", content: product.featured_image },
+            ]
+          : []),
       ],
     };
   },
   component: ProductDetail,
+  errorComponent: () => <PageError />,
+  notFoundComponent: () => (
+    <PageError
+      title="Produk tidak ditemukan"
+      message="Produk yang lo cari sudah tidak tersedia atau pindah alamat."
+    />
+  ),
 });
 
 function ProductDetail() {
-  const { product } = Route.useLoaderData();
-  const category = categories.find((c) => c.id === product.category);
-  const related = productsByCategory(product.category)
-    .filter((p) => p.slug !== product.slug)
-    .slice(0, 4);
+  const { product, category, related } = Route.useLoaderData();
+  const wa = useWaLink(`Halo MarkasMerchan, saya mau konsultasi produk ${product.name}.`);
+  const gallery = product.gallery ?? [];
 
   return (
     <>
@@ -43,33 +62,50 @@ function ProductDetail() {
           <nav aria-label="Breadcrumb" className="font-sans text-xs uppercase tracking-[0.2em] text-muted-foreground">
             <Link to="/products" className="hover:text-foreground">Our Product</Link>
             <span aria-hidden="true"> / </span>
-            <span>{category?.label}</span>
+            <span>{category?.name ?? "Product"}</span>
           </nav>
 
           <div className="mt-8 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-            <PhotoCard
-              src={product.image}
-              alt={product.name}
-              caption={`${product.slug}.jpg`}
-              rot={-1.5}
-              ratio="aspect-[4/5]"
-              className="w-full"
-              placeholder="PRODUCT IMAGE NEEDED"
-            />
+            <div>
+              <PhotoCard
+                src={product.featured_image}
+                alt={product.name}
+                caption={`${product.slug}.jpg`}
+                rot={-1.5}
+                ratio="aspect-[4/5]"
+                className="w-full"
+                placeholder="PRODUCT IMAGE NEEDED"
+              />
+              {gallery.length ? (
+                <ul className="mt-6 grid grid-cols-3 gap-4">
+                  {gallery.map((src: string, i: number) => (
+                    <li key={src}>
+                      <PhotoCard
+                        src={src}
+                        alt={`${product.name} ${i + 1}`}
+                        rot={((i % 3) - 1) * 1.5}
+                        ratio="aspect-square"
+                        className="w-full"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
 
             <div>
               <h1 className="font-sans text-[clamp(2.2rem,7vw,4.5rem)] font-bold uppercase leading-[0.92] tracking-tight">
                 {product.name}
               </h1>
               <p className="mt-4 max-w-md font-sans text-base leading-relaxed text-foreground/80">
-                {product.description ?? CONTENT_NEEDED}
+                {product.description ?? product.short_description ?? CONTENT_NEEDED}
               </p>
 
               <NoteCard rot={1} className="mt-8 max-w-md" title={<p className="font-sans text-lg font-bold">Detail produk</p>}>
                 <dl className="space-y-3">
                   <div>
                     <dt className="font-bold uppercase tracking-[0.14em] text-muted-foreground">Kategori</dt>
-                    <dd>{category?.label}</dd>
+                    <dd>{category?.name ?? CONTENT_NEEDED}</dd>
                   </div>
                   <div>
                     <dt className="font-bold uppercase tracking-[0.14em] text-muted-foreground">Material</dt>
@@ -78,9 +114,9 @@ function ProductDetail() {
                   <div>
                     <dt className="font-bold uppercase tracking-[0.14em] text-muted-foreground">Spesifikasi</dt>
                     <dd>
-                      {product.specs.length ? (
+                      {product.specifications?.length ? (
                         <ul className="list-disc pl-4">
-                          {product.specs.map((s: string) => (
+                          {product.specifications.map((s: string) => (
                             <li key={s}>{s}</li>
                           ))}
                         </ul>
@@ -93,7 +129,7 @@ function ProductDetail() {
               </NoteCard>
 
               <a
-                href={waLink(`Halo MarkasMerchan, saya mau konsultasi produk ${product.name}.`)}
+                href={wa}
                 target="_blank"
                 rel="noreferrer"
                 className="hairline shadow-cut mt-8 inline-block rounded-full bg-red px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] text-paper transition-transform hover:-translate-y-0.5"
@@ -109,11 +145,11 @@ function ProductDetail() {
         <section aria-labelledby="related-title" className="grain bg-sky px-4 py-20">
           <div className="mx-auto max-w-6xl">
             <h2 id="related-title" className="font-sans text-2xl font-bold uppercase tracking-tight">
-              More in <span className="font-serif italic lowercase">{category?.label}</span>
+              More in <span className="font-serif italic lowercase">{category?.name}</span>
             </h2>
             <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4">
-              {related.map((p, i) => (
-                <li key={p.slug}>
+              {related.map((p: PublicProduct, i: number) => (
+                <li key={p.id}>
                   <ProductCard product={p} index={i} />
                 </li>
               ))}
