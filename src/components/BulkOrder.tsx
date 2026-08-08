@@ -1,9 +1,10 @@
-import { waLink } from "@/data/contact";
+import { useWaLink } from "@/hooks/useSiteContext";
 import { Reveal } from "./Reveal";
 
 const targets = ["Campus", "Organization", "Event", "Corporate", "Community"];
 
 export function BulkOrder() {
+  const wa = useWaLink("Halo MarkasMerchan, saya mau minta penawaran untuk pemesanan borongan.");
   return (
     <section aria-labelledby="bulk-title" className="grain bg-yellow px-4 py-20 sm:py-28">
       <div className="mx-auto max-w-5xl text-center">
@@ -31,7 +32,7 @@ export function BulkOrder() {
 
         <Reveal delay={120}>
           <a
-            href={waLink("Halo MarkasMerchan, saya mau minta penawaran untuk pemesanan borongan.")}
+            href={wa}
             target="_blank"
             rel="noreferrer"
             className="hairline shadow-cut mt-10 inline-block rounded-full bg-ink px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] text-paper transition-transform hover:-translate-y-0.5"
