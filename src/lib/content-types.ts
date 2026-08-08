@@ -42,6 +42,41 @@ export type PublicPartner = {
   website_url: string | null;
 };
 
+export type LandingPageContent = {
+  one_stop: {
+    title_start: string;
+    title_highlight: string;
+    description: string;
+    labels: string[];
+    card_title_start: string;
+    card_title_highlight: string;
+    card_description: string;
+  };
+  why: {
+    title_start: string;
+    title_highlight: string;
+    values: { title: string; color: string; rot: number }[];
+  };
+  consultation: {
+    title_start: string;
+    title_highlight: string;
+    description: string;
+    button_text: string;
+    card_title: string;
+    features: string[];
+  };
+  bulk_order: {
+    title_start: string;
+    title_highlight: string;
+    description: string;
+    targets: string[];
+    button_text: string;
+  };
+  marquee: {
+    text: string;
+  };
+};
+
 export type SiteSettings = {
   brand_name: string;
   tagline: string;
@@ -58,6 +93,7 @@ export type SiteSettings = {
   email: string | null;
   address: string | null;
   footer_text: string;
+  landing_page_content: LandingPageContent | null;
 };
 
 export type ContactSettings = {

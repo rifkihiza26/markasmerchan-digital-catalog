@@ -304,6 +304,7 @@ export type Database = {
           hero_title: string | null
           id: string
           instagram_url: string | null
+          landing_page_content: Json | null
           logo_url: string | null
           tagline: string | null
           updated_at: string
@@ -320,6 +321,7 @@ export type Database = {
           hero_title?: string | null
           id?: string
           instagram_url?: string | null
+          landing_page_content?: Json | null
           logo_url?: string | null
           tagline?: string | null
           updated_at?: string
@@ -336,6 +338,7 @@ export type Database = {
           hero_title?: string | null
           id?: string
           instagram_url?: string | null
+          landing_page_content?: Json | null
           logo_url?: string | null
           tagline?: string | null
           updated_at?: string

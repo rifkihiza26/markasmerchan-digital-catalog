@@ -137,6 +137,7 @@ export async function loadSiteContext(): Promise<SiteContext> {
         email: site?.email ?? null,
         address: site?.address ?? null,
         footer_text: site?.footer_text || SITE_FALLBACK.footer_text,
+        landing_page_content: (site?.landing_page_content as any) ?? SITE_FALLBACK.landing_page_content,
       },
       contact: {
         whatsapp_number: contact?.whatsapp_number ?? site?.whatsapp_number ?? null,

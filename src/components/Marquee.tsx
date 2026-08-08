@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useSiteContext } from "@/hooks/useSiteContext";
 
 export function Marquee({ children, className }: { children: ReactNode; className?: string }) {
+  const { site } = useSiteContext();
+  const text = site.landing_page_content?.marquee.text ?? "slay & serve";
+
   return (
     <div
       aria-hidden="true"
@@ -13,7 +17,7 @@ export function Marquee({ children, className }: { children: ReactNode; classNam
             {Array.from({ length: 6 }).map((__, j) => (
               <span key={j} className="flex items-center gap-10">
                 <span>{children}</span>
-                <span className="font-serif italic normal-case tracking-normal">slay & serve</span>
+                <span className="font-serif italic normal-case tracking-normal">{text}</span>
               </span>
             ))}
           </span>

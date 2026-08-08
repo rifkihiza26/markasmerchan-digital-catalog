@@ -7,8 +7,9 @@ import {
   useUpdateContactSettings,
 } from "@/hooks/use-admin-data";
 import { ImageUploadInput } from "@/components/admin/ImageUploadInput";
+import { LandingPageSettingsForm } from "@/components/admin/LandingPageSettingsForm";
 import { toast } from "sonner";
-import { Settings, Save, Store, Phone, MapPin, Globe, Mail, Instagram, Clock, Loader2, Image as ImageIcon } from "lucide-react";
+import { Settings, Save, Store, Phone, MapPin, Globe, Mail, Instagram, Clock, Loader2, Image as ImageIcon, LayoutTemplate } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -100,6 +101,18 @@ function AdminSettings() {
     }
   };
 
+  const handleSaveLandingPage = async (content: any) => {
+    try {
+      await updateSiteSettings.mutateAsync({
+        id: siteSettings?.id,
+        landing_page_content: content
+      } as any);
+      toast.success("Konten landing page berhasil disimpan!");
+    } catch (err: any) {
+      toast.error(err.message || "Gagal menyimpan konten landing page.");
+    }
+  };
+
   const handleSaveContact = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -162,6 +175,13 @@ function AdminSettings() {
           >
             <Phone className="h-4 w-4 mr-2" />
             Kontak & Lokasi
+          </TabsTrigger>
+          <TabsTrigger
+            value="landing"
+            className="data-[state=active]:bg-ink data-[state=active]:text-paper font-bold text-xs rounded-sm"
+          >
+            <LayoutTemplate className="h-4 w-4 mr-2" />
+            Konten Landing Page
           </TabsTrigger>
         </TabsList>
 
@@ -411,6 +431,15 @@ function AdminSettings() {
               </button>
             </div>
           </form>
+        </TabsContent>
+
+        {/* Tab 4: Landing Page */}
+        <TabsContent value="landing">
+          <LandingPageSettingsForm
+            initialContent={(siteSettings?.landing_page_content as any) || null}
+            onSave={handleSaveLandingPage}
+            isPending={updateSiteSettings.isPending}
+          />
         </TabsContent>
       </Tabs>
     </div>
