@@ -4,21 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Save } from "lucide-react";
 import type { LandingPageContent } from "@/lib/content-types";
+import { SITE_FALLBACK } from "@/lib/content-defaults";
 
 export function LandingPageSettingsForm({
   initialContent,
   onSave,
   isPending
 }: {
-  initialContent: LandingPageContent | null;
+  initialContent: any | null;
   onSave: (content: LandingPageContent) => void;
   isPending: boolean;
 }) {
   const [content, setContent] = useState<LandingPageContent | null>(null);
 
   useEffect(() => {
-    if (initialContent) {
-      setContent(initialContent);
+    // If there's no initial content or it's an empty object, fallback to defaults
+    // Also merge the object to ensure deeply nested keys exist
+    const hasData = initialContent && Object.keys(initialContent).length > 0;
+    if (hasData) {
+      setContent({ ...SITE_FALLBACK.landing_page_content, ...initialContent });
+    } else {
+      setContent(SITE_FALLBACK.landing_page_content);
     }
   }, [initialContent]);
 
