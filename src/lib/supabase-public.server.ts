@@ -6,8 +6,15 @@ import type { Database } from "@/integrations/supabase/types";
  * Never used for writes — RLS restricts anon to active/published rows.
  */
 export function createPublicClient() {
-  const url = process.env["SUPABASE_URL"]!;
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
+  const url =
+    (typeof process !== "undefined" ? process.env["SUPABASE_URL"] || process.env["VITE_SUPABASE_URL"] : undefined) ||
+    import.meta.env?.VITE_SUPABASE_URL ||
+    "https://placeholder.supabase.co";
+
+  const key =
+    (typeof process !== "undefined" ? process.env["SUPABASE_PUBLISHABLE_KEY"] || process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] : undefined) ||
+    import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    "placeholder-key";
 
   return createClient<Database>(url, key, {
     auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
