@@ -1,6 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 
+function isNewSupabaseApiKey(value: string): boolean {
+  return value.startsWith("sb_publishable_") || value.startsWith("sb_secret_") || value.startsWith("sb_");
+}
+
 /**
  * Read-only Supabase client for public (anon) content used during SSR.
  * Never used for writes — RLS restricts anon to active/published rows.
@@ -21,8 +25,9 @@ export function createPublicClient() {
     global: {
       fetch: (input, init) => {
         const headers = new Headers(init?.headers);
-        if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) {
+        if (isNewSupabaseApiKey(key)) {
           headers.delete("Authorization");
+          headers.delete("authorization");
         }
         headers.set("apikey", key);
         return fetch(input, { ...init, headers });

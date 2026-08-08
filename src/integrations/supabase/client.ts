@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
 function isNewSupabaseApiKey(value: string): boolean {
-  return value.startsWith('sb_publishable_') || value.startsWith('sb_secret_');
+  return value.startsWith('sb_publishable_') || value.startsWith('sb_secret_') || value.startsWith('sb_');
 }
 
 function createSupabaseFetch(supabaseKey: string): typeof fetch {
@@ -15,8 +15,9 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
       new Headers(init.headers).forEach((value, key) => headers.set(key, value));
     }
 
-    if (isNewSupabaseApiKey(supabaseKey) && headers.get('Authorization') === `Bearer ${supabaseKey}`) {
+    if (isNewSupabaseApiKey(supabaseKey)) {
       headers.delete('Authorization');
+      headers.delete('authorization');
     }
 
     headers.set('apikey', supabaseKey);
