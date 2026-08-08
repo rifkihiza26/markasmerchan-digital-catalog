@@ -1,9 +1,15 @@
-import { contact, waLink } from "@/data/contact";
 import { NoteCard } from "./NoteCard";
 import { Reveal } from "./Reveal";
 import { PhotoCard } from "./PhotoCard";
+import { useSiteContext, useWaLink } from "@/hooks/useSiteContext";
+import { instagramHandle } from "@/lib/content-defaults";
+
+const NOT_SET = "Belum diisi";
 
 export function ContactSection() {
+  const { contact } = useSiteContext();
+  const wa = useWaLink();
+
   return (
     <section aria-labelledby="contact-title" className="grain bg-red px-4 py-20 text-paper sm:py-28">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-start">
@@ -21,21 +27,23 @@ export function ContactSection() {
             konsultasi sampai produksi.
             <div className="mt-6 flex flex-wrap gap-2">
               <a
-                href={waLink()}
+                href={wa}
                 target="_blank"
                 rel="noreferrer"
                 className="hairline rounded-full bg-ink px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-paper"
               >
                 WhatsApp us
               </a>
-              <a
-                href={contact.instagramUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="hairline rounded-full bg-yellow px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em]"
-              >
-                Instagram
-              </a>
+              {contact.instagram_url ? (
+                <a
+                  href={contact.instagram_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hairline rounded-full bg-yellow px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em]"
+                >
+                  Instagram
+                </a>
+              ) : null}
             </div>
           </NoteCard>
         </Reveal>
@@ -45,20 +53,26 @@ export function ContactSection() {
           <dl className="mt-5 space-y-4 font-sans text-sm">
             <div>
               <dt className="font-bold uppercase tracking-[0.16em] text-paper/70">WhatsApp</dt>
-              <dd>{contact.whatsappLabel}</dd>
+              <dd>{contact.whatsapp_number ?? NOT_SET}</dd>
             </div>
             <div>
               <dt className="font-bold uppercase tracking-[0.16em] text-paper/70">Instagram</dt>
-              <dd>{contact.instagram}</dd>
+              <dd>{instagramHandle(contact.instagram_url) ?? NOT_SET}</dd>
             </div>
             <div>
               <dt className="font-bold uppercase tracking-[0.16em] text-paper/70">Email</dt>
-              <dd>{contact.email ?? "[CONTENT FROM CATALOG NEEDED]"}</dd>
+              <dd>{contact.email ?? NOT_SET}</dd>
             </div>
             <div>
               <dt className="font-bold uppercase tracking-[0.16em] text-paper/70">Alamat</dt>
-              <dd>{contact.address ?? "[CONTENT FROM CATALOG NEEDED]"}</dd>
+              <dd>{contact.address ?? NOT_SET}</dd>
             </div>
+            {contact.business_hours ? (
+              <div>
+                <dt className="font-bold uppercase tracking-[0.16em] text-paper/70">Jam operasional</dt>
+                <dd>{contact.business_hours}</dd>
+              </div>
+            ) : null}
           </dl>
 
           <div className="mt-10 hidden w-40 sm:block">

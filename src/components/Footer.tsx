@@ -1,14 +1,17 @@
 import { Link } from "@tanstack/react-router";
-import { contact, waLink } from "@/data/contact";
+import { useSiteContext, useWaLink } from "@/hooks/useSiteContext";
 
 export function Footer() {
+  const { site, contact } = useSiteContext();
+  const wa = useWaLink();
+
   return (
     <footer className="grain hairline border-x-0 border-b-0 bg-ink px-4 py-14 text-paper">
       <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="font-sans text-2xl font-bold uppercase tracking-tight">{contact.brand}</p>
-          <p className="mt-1 font-serif text-lg italic text-yellow">{contact.positioning}</p>
-          <p className="mt-4 max-w-xs font-sans text-sm text-paper/70">{contact.tagline}</p>
+          <p className="font-sans text-2xl font-bold uppercase tracking-tight">{site.brand_name}</p>
+          <p className="mt-1 font-serif text-lg italic text-yellow">{site.description}</p>
+          <p className="mt-4 max-w-xs font-sans text-sm text-paper/70">{site.tagline}</p>
         </div>
 
         <nav aria-label="Footer" className="font-sans text-sm">
@@ -24,13 +27,20 @@ export function Footer() {
         <div className="font-sans text-sm">
           <p className="mb-3 text-xs uppercase tracking-[0.2em] text-paper/50">Social</p>
           <ul className="space-y-2">
+            {contact.instagram_url ? (
+              <li>
+                <a
+                  href={contact.instagram_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-yellow"
+                >
+                  Instagram
+                </a>
+              </li>
+            ) : null}
             <li>
-              <a href={contact.instagramUrl} target="_blank" rel="noreferrer" className="hover:text-yellow">
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a href={waLink()} target="_blank" rel="noreferrer" className="hover:text-yellow">
+              <a href={wa} target="_blank" rel="noreferrer" className="hover:text-yellow">
                 WhatsApp
               </a>
             </li>
@@ -38,8 +48,8 @@ export function Footer() {
         </div>
 
         <div className="font-sans text-xs text-paper/50">
-          <p>© {new Date().getFullYear()} {contact.brand}.</p>
-          <p className="mt-2">All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {site.brand_name}.</p>
+          <p className="mt-2">{site.footer_text}</p>
         </div>
       </div>
     </footer>
