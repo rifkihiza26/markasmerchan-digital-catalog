@@ -1,8 +1,9 @@
-import { waLink } from "@/data/contact";
+import { useWaLink } from "@/hooks/useSiteContext";
 import { NoteCard } from "./NoteCard";
 import { Reveal } from "./Reveal";
 
 export function DesignConsultation() {
+  const wa = useWaLink("Halo MarkasMerchan, saya mau konsultasi desain merch.");
   return (
     <section aria-labelledby="consult-title" className="grain bg-paper px-4 py-20 sm:py-28">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center">
@@ -16,7 +17,7 @@ export function DesignConsultation() {
             desain kami bantuin sampai jadi.
           </p>
           <a
-            href={waLink("Halo MarkasMerchan, saya mau konsultasi desain merch.")}
+            href={wa}
             target="_blank"
             rel="noreferrer"
             className="hairline shadow-cut mt-8 inline-block rounded-full bg-violet px-6 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] text-paper transition-transform hover:-translate-y-0.5"

@@ -7,6 +7,8 @@ import { PartnerSection } from "@/components/PartnerSection";
 import { Marquee } from "@/components/Marquee";
 import { Reveal } from "@/components/Reveal";
 import skyImg from "@/assets/sky.jpg";
+import { PageError } from "@/components/PageError";
+import { getPartners, getProjects } from "@/lib/content.functions";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -21,10 +23,18 @@ export const Route = createFileRoute("/about")({
       { property: "og:description", content: "One stop solution custom merchandise & apparel." },
     ],
   }),
+  loader: async () => {
+    const [projects, partners] = await Promise.all([getProjects(), getPartners()]);
+    return { projects, partners };
+  },
   component: AboutPage,
+  errorComponent: () => <PageError />,
+  notFoundComponent: () => <PageError title="Halaman tidak ditemukan" />,
 });
 
 function AboutPage() {
+  const { projects, partners } = Route.useLoaderData();
+
   return (
     <>
       <section className="relative isolate overflow-hidden px-4 pb-16 pt-36 sm:pt-40">
@@ -42,8 +52,8 @@ function AboutPage() {
       <AboutSection />
       <WhyMarkasMerchan />
       <DesignConsultation />
-      <ProjectGallery />
-      <PartnerSection />
+      <ProjectGallery projects={projects} />
+      <PartnerSection partners={partners} />
     </>
   );
 }

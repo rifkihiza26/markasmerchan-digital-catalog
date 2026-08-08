@@ -4,9 +4,12 @@ import { Marquee } from "@/components/Marquee";
 import { DesignConsultation } from "@/components/DesignConsultation";
 import { BulkOrder } from "@/components/BulkOrder";
 import { Reveal } from "@/components/Reveal";
+import { PageError } from "@/components/PageError";
+import { getCatalog } from "@/lib/content.functions";
 import skyImg from "@/assets/sky.jpg";
 
 export const Route = createFileRoute("/products/")({
+  loader: async () => ({ categories: await getCatalog() }),
   head: () => ({
     meta: [
       { title: "Our Product — MarkasMerchan Custom Merch Catalog" },
@@ -20,9 +23,13 @@ export const Route = createFileRoute("/products/")({
     ],
   }),
   component: ProductsPage,
+  errorComponent: () => <PageError />,
+  notFoundComponent: () => <PageError title="Halaman tidak ditemukan" />,
 });
 
 function ProductsPage() {
+  const { categories } = Route.useLoaderData();
+
   return (
     <>
       <section className="relative isolate overflow-hidden px-4 pb-16 pt-36 sm:pt-40">
@@ -41,7 +48,7 @@ function ProductsPage() {
         </div>
       </section>
       <Marquee>Apparel · Merchandise · Flower</Marquee>
-      <ProductSection />
+      <ProductSection categories={categories} />
       <DesignConsultation />
       <BulkOrder />
     </>

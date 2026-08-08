@@ -2,9 +2,10 @@ import { Link } from "@tanstack/react-router";
 import skyImg from "@/assets/sky.jpg";
 import { Logo } from "./Logo";
 import { PhotoCard } from "./PhotoCard";
-import { waLink } from "@/data/contact";
+import { useWaLink } from "@/hooks/useSiteContext";
 
 export function Hero() {
+  const wa = useWaLink();
   return (
     <section className="relative isolate overflow-hidden" aria-labelledby="hero-title">
       <img
@@ -53,7 +54,7 @@ export function Hero() {
                 Explore our product
               </Link>
               <a
-                href={waLink()}
+                href={wa}
                 target="_blank"
                 rel="noreferrer"
                 className="hairline rounded-full bg-paper px-6 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] transition-colors hover:bg-yellow"

@@ -9,8 +9,19 @@ import { BulkOrder } from "@/components/BulkOrder";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { PartnerSection } from "@/components/PartnerSection";
 import { ContactSection } from "@/components/ContactSection";
+import { getCatalog, getPartners, getProjects } from "@/lib/content.functions";
+import { PageError } from "@/components/PageError";
+import type { CatalogCategory, PublicProduct } from "@/lib/content-types";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [categories, projects, partners] = await Promise.all([
+      getCatalog(),
+      getProjects(),
+      getPartners(),
+    ]);
+    return { categories, projects, partners };
+  },
   head: () => ({
     meta: [
       { title: "MarkasMerchan — Custom Merchandise & Apparel" },
@@ -24,20 +35,30 @@ export const Route = createFileRoute("/")({
     ],
   }),
   component: Index,
+  errorComponent: () => <PageError />,
+  notFoundComponent: () => <PageError title="Halaman tidak ditemukan" />,
 });
 
 function Index() {
+  const { categories, projects, partners } = Route.useLoaderData();
+  const featured = categories.map((c: CatalogCategory) => ({
+    ...c,
+    products: c.products.filter((p: PublicProduct) => p.is_featured).length
+      ? c.products.filter((p: PublicProduct) => p.is_featured)
+      : c.products,
+  }));
+
   return (
     <>
       <Hero />
       <Marquee>Satu tempat, semua kebutuhan merch lo</Marquee>
       <OneStopSection />
-      <ProductSection limitPerCategory={4} />
+      <ProductSection categories={featured} limitPerCategory={4} />
       <WhyMarkasMerchan />
       <DesignConsultation />
       <BulkOrder />
-      <ProjectGallery />
-      <PartnerSection />
+      <ProjectGallery projects={projects} />
+      <PartnerSection partners={partners} />
       <ContactSection />
     </>
   );
