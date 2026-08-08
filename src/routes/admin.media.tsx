@@ -97,8 +97,8 @@ function AdminMedia() {
           </p>
         </div>
 
-        <div className="relative">
-          <Input
+        <div>
+          <input
             type="file"
             id="media-upload-input"
             accept="image/*"
@@ -106,22 +106,19 @@ function AdminMedia() {
             disabled={uploadMedia.isPending}
             className="hidden"
           />
-          <Label htmlFor="media-upload-input">
-            <Button
-              asChild
-              disabled={uploadMedia.isPending}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-sm shadow-lg shadow-primary/20 cursor-pointer flex items-center gap-2"
-            >
-              <span>
-                {uploadMedia.isPending ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Upload className="h-4 w-4" />
-                )}
-                {uploadMedia.isPending ? "Mengunggah..." : "Upload Media Baru"}
-              </span>
-            </Button>
-          </Label>
+          <label
+            htmlFor="media-upload-input"
+            className={`h-10 px-4 bg-ink text-paper font-bold text-xs rounded-sm shadow-cut hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer inline-flex items-center gap-2 ${
+              uploadMedia.isPending ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            {uploadMedia.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Upload className="h-4 w-4" />
+            )}
+            <span>{uploadMedia.isPending ? "Mengunggah..." : "Upload Media Baru"}</span>
+          </label>
         </div>
       </div>
 

@@ -8,6 +8,7 @@ import {
   useDeleteProduct,
 } from "@/hooks/use-admin-data";
 import { slugify } from "@/lib/slug";
+import { ImageUploadInput } from "@/components/admin/ImageUploadInput";
 import { toast } from "sonner";
 import {
   Package,
@@ -507,28 +508,13 @@ function AdminProducts() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-ink/80">URL Foto Utama (Featured Image)</Label>
-              <Input
-                placeholder="https://images.unsplash.com/... atau /media/..."
-                value={featuredImage}
-                onChange={(e) => setFeaturedImage(e.target.value)}
-                className="bg-note border-ink/20 text-ink"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-ink/80">
-                URL Galeri Foto (1 URL per baris)
-              </Label>
-              <Textarea
-                placeholder="https://.../foto1.jpg&#10;https://.../foto2.jpg"
-                rows={2}
-                value={galleryText}
-                onChange={(e) => setGalleryText(e.target.value)}
-                className="bg-note border-ink/20 text-ink font-mono text-xs"
-              />
-            </div>
+            <ImageUploadInput
+              label="Foto Utama Produk"
+              value={featuredImage}
+              onChange={setFeaturedImage}
+              folder="products"
+              description="Unggah file gambar dari komputer Anda atau gunakan URL."
+            />
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-ink/20">
               <div className="space-y-2">
@@ -554,7 +540,7 @@ function AdminProducts() {
 
               <div className="flex items-center justify-between p-3 rounded-sm bg-note border border-ink/20">
                 <Label className="text-xs font-semibold text-ink/80 cursor-pointer" htmlFor="is-featured-toggle">
-                  Featured (Hero/Top)
+                  Produk Unggulan (Beranda)
                 </Label>
                 <Switch
                   id="is-featured-toggle"

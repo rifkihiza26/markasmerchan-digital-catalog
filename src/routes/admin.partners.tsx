@@ -6,6 +6,7 @@ import {
   useUpdatePartner,
   useDeletePartner,
 } from "@/hooks/use-admin-data";
+import { ImageUploadInput } from "@/components/admin/ImageUploadInput";
 import { toast } from "sonner";
 import {
   Users,
@@ -266,15 +267,13 @@ function AdminPartners() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-ink/80">URL Logo Image</Label>
-              <Input
-                placeholder="https://..."
-                value={logoUrl}
-                onChange={(e) => setLogoUrl(e.target.value)}
-                className="bg-note border-ink/20 text-ink"
-              />
-            </div>
+            <ImageUploadInput
+              label="Logo Partner / Brand"
+              value={logoUrl}
+              onChange={setLogoUrl}
+              folder="partners"
+              description="Unggah file gambar/logo partner (PNG transparan disarankan)."
+            />
 
             <div className="space-y-2">
               <Label className="text-xs font-semibold text-ink/80">URL Website Partner (Opsional)</Label>

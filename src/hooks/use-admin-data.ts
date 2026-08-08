@@ -14,7 +14,7 @@ export function useAdminProducts() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
   });
 }
@@ -27,7 +27,7 @@ export function useCreateProduct() {
         .from("products")
         .insert(payload)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -47,7 +47,7 @@ export function useUpdateProduct() {
         .update({ ...payload, updated_at: new Date().toISOString() })
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -84,7 +84,7 @@ export function useAdminCategories() {
         .order("name", { ascending: true });
 
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
   });
 }
@@ -97,7 +97,7 @@ export function useCreateCategory() {
         .from("product_categories")
         .insert(payload)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -117,7 +117,7 @@ export function useUpdateCategory() {
         .update({ ...payload, updated_at: new Date().toISOString() })
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -154,7 +154,7 @@ export function useAdminProjects() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
   });
 }
@@ -167,7 +167,7 @@ export function useCreateProject() {
         .from("projects")
         .insert(payload)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -187,7 +187,7 @@ export function useUpdateProject() {
         .update({ ...payload, updated_at: new Date().toISOString() })
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -224,7 +224,7 @@ export function useAdminPartners() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
   });
 }
@@ -237,7 +237,7 @@ export function useCreatePartner() {
         .from("partners")
         .insert(payload)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -257,7 +257,7 @@ export function useUpdatePartner() {
         .update({ ...payload, updated_at: new Date().toISOString() })
         .eq("id", id)
         .select()
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -290,6 +290,8 @@ export function useAdminSiteSettings() {
       const { data, error } = await supabase
         .from("site_settings")
         .select("*")
+        .order("created_at", { ascending: true })
+        .limit(1)
         .maybeSingle();
 
       if (error) throw error;
@@ -302,13 +304,27 @@ export function useUpdateSiteSettings() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...payload }: TablesUpdate<"site_settings"> & { id?: string }) => {
-      if (id) {
+      // Find existing row ID if not provided
+      let targetId = id;
+      if (!targetId) {
+        const { data: existing } = await supabase
+          .from("site_settings")
+          .select("id")
+          .order("created_at", { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        if (existing?.id) {
+          targetId = existing.id;
+        }
+      }
+
+      if (targetId) {
         const { data, error } = await supabase
           .from("site_settings")
           .update({ ...payload, updated_at: new Date().toISOString() })
-          .eq("id", id)
+          .eq("id", targetId)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       } else {
@@ -316,7 +332,7 @@ export function useUpdateSiteSettings() {
           .from("site_settings")
           .insert(payload as TablesInsert<"site_settings">)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       }
@@ -335,6 +351,8 @@ export function useAdminContactSettings() {
       const { data, error } = await supabase
         .from("contact_settings")
         .select("*")
+        .order("created_at", { ascending: true })
+        .limit(1)
         .maybeSingle();
 
       if (error) throw error;
@@ -347,13 +365,26 @@ export function useUpdateContactSettings() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...payload }: TablesUpdate<"contact_settings"> & { id?: string }) => {
-      if (id) {
+      let targetId = id;
+      if (!targetId) {
+        const { data: existing } = await supabase
+          .from("contact_settings")
+          .select("id")
+          .order("created_at", { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        if (existing?.id) {
+          targetId = existing.id;
+        }
+      }
+
+      if (targetId) {
         const { data, error } = await supabase
           .from("contact_settings")
           .update({ ...payload, updated_at: new Date().toISOString() })
-          .eq("id", id)
+          .eq("id", targetId)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       } else {
@@ -361,7 +392,7 @@ export function useUpdateContactSettings() {
           .from("contact_settings")
           .insert(payload as TablesInsert<"contact_settings">)
           .select()
-          .single();
+          .maybeSingle();
         if (error) throw error;
         return data;
       }
@@ -383,8 +414,11 @@ export function useAdminMediaAssets() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      return data;
+      if (error) {
+        console.warn("media_assets query error:", error);
+        return [];
+      }
+      return data ?? [];
     },
   });
 }
@@ -398,15 +432,14 @@ export function useUploadMediaAsset() {
       const filePath = `${folder}/${fileName}`;
 
       // Upload file to Supabase storage bucket 'media'
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from("media")
         .upload(filePath, file, {
           cacheControl: "3600",
-          upsert: false,
+          upsert: true,
         });
 
       if (uploadError) {
-        // Fallback: If storage bucket upload fails or is restricted, we record public asset entry with data URL or mock path
         console.warn("Storage upload warning, saving asset metadata record", uploadError);
       }
 
@@ -425,7 +458,7 @@ export function useUploadMediaAsset() {
           folder: folder,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;

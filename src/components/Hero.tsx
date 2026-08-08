@@ -2,10 +2,16 @@ import { Link } from "@tanstack/react-router";
 import skyImg from "@/assets/sky.jpg";
 import { Logo } from "./Logo";
 import { PhotoCard } from "./PhotoCard";
-import { useWaLink } from "@/hooks/useSiteContext";
+import { useSiteContext, useWaLink } from "@/hooks/useSiteContext";
 
 export function Hero() {
+  const { site } = useSiteContext();
   const wa = useWaLink();
+
+  const hero1 = site.hero_image_1 || undefined;
+  const hero2 = site.hero_image_2 || undefined;
+  const hero3 = site.hero_image_3 || undefined;
+
   return (
     <section className="relative isolate overflow-hidden" aria-labelledby="hero-title">
       <img
@@ -22,13 +28,13 @@ export function Hero() {
         <div className="relative">
           {/* collage: side photos */}
           <div className="pointer-events-none absolute -left-2 top-0 hidden w-40 lg:block xl:w-48">
-            <PhotoCard alt="Brand photo 01" caption="slay.png" rot={-3} float placeholder="BRAND PHOTO" />
+            <PhotoCard src={hero1} alt="Brand photo 01" caption="Hero_01.jpg" rot={-3} float placeholder="BRAND PHOTO 1" />
           </div>
           <div className="pointer-events-none absolute -right-4 top-4 hidden w-36 lg:block xl:w-44">
-            <PhotoCard alt="Brand photo 02" caption="slay.png" rot={3} float ratio="aspect-[4/3]" placeholder="BRAND PHOTO" />
+            <PhotoCard src={hero2} alt="Brand photo 02" caption="Hero_02.jpg" rot={3} float ratio="aspect-[4/3]" placeholder="BRAND PHOTO 2" />
           </div>
           <div className="pointer-events-none absolute -right-2 top-56 hidden w-48 lg:block xl:w-56">
-            <PhotoCard alt="Brand photo 03" caption="Details.jpg" rot={-2} float placeholder="BRAND PHOTO" />
+            <PhotoCard src={hero3} alt="Brand photo 03" caption="Hero_03.jpg" rot={-2} float placeholder="BRAND PHOTO 3" />
           </div>
 
           <div className="relative z-10 mx-auto max-w-2xl text-center">
@@ -66,9 +72,9 @@ export function Hero() {
 
           {/* mobile / tablet collage strip */}
           <div className="mt-10 flex items-start justify-center gap-4 lg:hidden">
-            <PhotoCard alt="Brand photo 01" caption="slay.png" rot={-3} className="w-28 sm:w-36" placeholder="BRAND PHOTO" />
-            <PhotoCard alt="Brand photo 02" caption="Details.jpg" rot={2} className="w-32 sm:w-44" ratio="aspect-[4/3]" placeholder="BRAND PHOTO" />
-            <PhotoCard alt="Brand photo 03" caption="slay.png" rot={-1} className="w-24 sm:w-32" placeholder="BRAND PHOTO" />
+            <PhotoCard src={hero1} alt="Brand photo 01" caption="Hero_01.jpg" rot={-3} className="w-28 sm:w-36" placeholder="BRAND PHOTO 1" />
+            <PhotoCard src={hero2} alt="Brand photo 02" caption="Hero_02.jpg" rot={2} className="w-32 sm:w-44" ratio="aspect-[4/3]" placeholder="BRAND PHOTO 2" />
+            <PhotoCard src={hero3} alt="Brand photo 03" caption="Hero_03.jpg" rot={-1} className="w-24 sm:w-32" placeholder="BRAND PHOTO 3" />
           </div>
         </div>
       </div>

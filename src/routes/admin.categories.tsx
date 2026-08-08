@@ -7,6 +7,7 @@ import {
   useDeleteCategory,
 } from "@/hooks/use-admin-data";
 import { slugify } from "@/lib/slug";
+import { ImageUploadInput } from "@/components/admin/ImageUploadInput";
 import { toast } from "sonner";
 import {
   FolderTree,
@@ -307,15 +308,13 @@ function AdminCategories() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-ink/80">URL Gambar Kategori</Label>
-              <Input
-                placeholder="https://images.unsplash.com/..."
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="bg-note border-ink/20 text-ink"
-              />
-            </div>
+            <ImageUploadInput
+              label="Foto Kategori"
+              value={imageUrl}
+              onChange={setImageUrl}
+              folder="categories"
+              description="Unggah gambar sampul untuk kategori ini."
+            />
 
             <div className="grid grid-cols-2 gap-4 pt-2 border-t border-ink/20">
               <div className="space-y-2">

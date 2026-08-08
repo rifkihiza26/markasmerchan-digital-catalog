@@ -50,6 +50,9 @@ export type SiteSettings = {
   favicon_url: string | null;
   hero_title: string;
   hero_subtitle: string;
+  hero_image_1: string | null;
+  hero_image_2: string | null;
+  hero_image_3: string | null;
   instagram_url: string | null;
   whatsapp_number: string | null;
   email: string | null;

@@ -7,6 +7,7 @@ import {
   useDeleteProject,
 } from "@/hooks/use-admin-data";
 import { slugify } from "@/lib/slug";
+import { ImageUploadInput } from "@/components/admin/ImageUploadInput";
 import { toast } from "sonner";
 import {
   Briefcase,
@@ -381,15 +382,13 @@ function AdminProjects() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-ink/80">URL Gambar Utama</Label>
-              <Input
-                placeholder="https://..."
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="bg-note border-ink/20 text-ink"
-              />
-            </div>
+            <ImageUploadInput
+              label="Foto Utama Project"
+              value={imageUrl}
+              onChange={setImageUrl}
+              folder="projects"
+              description="Unggah foto dokumentasi project hasil merchandise."
+            />
 
             <div className="space-y-2">
               <Label className="text-xs font-semibold text-ink/80">URL Galeri (1 URL per baris)</Label>
