@@ -11,6 +11,7 @@ import { PartnerSection } from "@/components/PartnerSection";
 import { ContactSection } from "@/components/ContactSection";
 import { getCatalog, getPartners, getProjects } from "@/lib/content.functions";
 import { PageError } from "@/components/PageError";
+import type { CatalogCategory, PublicProduct } from "@/lib/content-types";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
@@ -40,10 +41,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { categories, projects, partners } = Route.useLoaderData();
-  const featured = categories.map((c) => ({
+  const featured = categories.map((c: CatalogCategory) => ({
     ...c,
-    products: c.products.filter((p) => p.is_featured).length
-      ? c.products.filter((p) => p.is_featured)
+    products: c.products.filter((p: PublicProduct) => p.is_featured).length
+      ? c.products.filter((p: PublicProduct) => p.is_featured)
       : c.products,
   }));
 
