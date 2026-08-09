@@ -117,7 +117,7 @@ function AdminSettings() {
     e.preventDefault();
     try {
       await updateContactSettings.mutateAsync({
-        id: contactSettings?.id,
+        ...(contactSettings?.id ? { id: contactSettings.id } : {}),
         whatsapp_number: whatsappNumber.trim() || null,
         email: email.trim() || null,
         address: address.trim() || null,

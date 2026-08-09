@@ -48,6 +48,7 @@ function AdminMedia() {
     if (!files || files.length === 0) return;
 
     const file = files[0];
+    if (!file) return;
     try {
       toast.loading("Mengunggah file media...", { id: "upload-toast" });
       await uploadMedia.mutateAsync({ file, folder: "products" });
