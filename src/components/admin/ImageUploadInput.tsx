@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, Loader2, Link as LinkIcon, Check } from "lucide-react";
+import { Upload, X, Loader2, Link as LinkIcon, Check } from "lucide-react";
+import { uploadMediaFile } from "@/lib/storage";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+
 
 interface ImageUploadInputProps {
   value: string;
