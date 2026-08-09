@@ -4,7 +4,7 @@ import { useSiteContext } from "@/hooks/useSiteContext";
 
 export function Marquee({ children, className }: { children: ReactNode; className?: string }) {
   const { site } = useSiteContext();
-  const text = site.landing_page_content?.marquee.text ?? "slay & serve";
+  const text = site.landing_page_content?.marquee?.text ?? "slay & serve";
 
   return (
     <div
