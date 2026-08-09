@@ -300,6 +300,9 @@ export type Database = {
           email: string | null
           favicon_url: string | null
           footer_text: string | null
+          hero_image_1: string | null
+          hero_image_2: string | null
+          hero_image_3: string | null
           hero_subtitle: string | null
           hero_title: string | null
           id: string
@@ -317,6 +320,9 @@ export type Database = {
           email?: string | null
           favicon_url?: string | null
           footer_text?: string | null
+          hero_image_1?: string | null
+          hero_image_2?: string | null
+          hero_image_3?: string | null
           hero_subtitle?: string | null
           hero_title?: string | null
           id?: string
@@ -334,6 +340,9 @@ export type Database = {
           email?: string | null
           favicon_url?: string | null
           footer_text?: string | null
+          hero_image_1?: string | null
+          hero_image_2?: string | null
+          hero_image_3?: string | null
           hero_subtitle?: string | null
           hero_title?: string | null
           id?: string

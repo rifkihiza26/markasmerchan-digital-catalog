@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, Loader2, Link as LinkIcon, Check } from "lucide-react";
+import { Upload, X, Loader2, Link as LinkIcon, Check } from "lucide-react";
+import { uploadMediaFile } from "@/lib/storage";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+
 
 interface ImageUploadInputProps {
   value: string;
@@ -46,32 +48,20 @@ export function ImageUploadInput({
 
     try {
       setUploading(true);
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Math.random().toString(36).substring(2, 9)}_${Date.now()}.${fileExt}`;
-      const filePath = `${folder}/${fileName}`;
+      const { path, url } = await uploadMediaFile(file, folder);
 
-      // Upload file to Supabase storage bucket 'media'
-      const { error: uploadError } = await supabase.storage
-        .from("media")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: true,
-        });
+      // Register in the media library so it can be reused later (non-blocking).
+      await supabase.from("media_assets").insert({
+        file_name: file.name,
+        path,
+        public_url: url,
+        mime_type: file.type,
+        size_bytes: file.size,
+        folder,
+      });
 
-      if (uploadError) {
-        console.warn("Storage upload error:", uploadError);
-        // Fallback object URL if storage bucket fails
-        const objectUrl = URL.createObjectURL(file);
-        onChange(objectUrl);
-        toast.warning("Gambar digunakan secara lokal (Gagal mengunggah ke storage server).");
-      } else {
-        const { data: publicUrlData } = supabase.storage.from("media").getPublicUrl(filePath);
-        const publicUrl = publicUrlData?.publicUrl;
-        if (publicUrl) {
-          onChange(publicUrl);
-          toast.success("Foto berhasil diunggah!");
-        }
-      }
+      onChange(url);
+      toast.success("Foto berhasil diunggah!");
     } catch (err: any) {
       toast.error(err.message || "Gagal mengunggah gambar");
     } finally {
@@ -81,6 +71,7 @@ export function ImageUploadInput({
       }
     }
   };
+
 
   const handleApplyUrl = () => {
     if (customUrl.trim()) {
