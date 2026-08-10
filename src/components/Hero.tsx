@@ -8,6 +8,7 @@ export function Hero() {
   const { site } = useSiteContext();
   const wa = useWaLink();
 
+  const c = site.landing_page_content?.hero;
   const hero1 = site.hero_image_1 || undefined;
   const hero2 = site.hero_image_2 || undefined;
   const hero3 = site.hero_image_3 || undefined;
@@ -46,10 +47,10 @@ export function Hero() {
             </p>
 
             <p className="marker-blue mx-auto mt-6 inline-block font-sans text-sm sm:text-base">
-              Custom Merchandise &amp; Apparel
+              {c?.badge ?? site.description}
             </p>
             <p className="mx-auto mt-3 max-w-md font-serif text-lg italic leading-snug sm:text-xl">
-              “Satu Tempat, Semua Kebutuhan Merch Lo”
+              {c?.quote ?? site.tagline}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -57,7 +58,7 @@ export function Hero() {
                 to="/products"
                 className="hairline shadow-cut rounded-full bg-red px-6 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] text-paper transition-transform hover:-translate-y-0.5"
               >
-                Explore our product
+                {c?.cta_primary ?? "Explore our product"}
               </Link>
               <a
                 href={wa}
@@ -65,7 +66,7 @@ export function Hero() {
                 rel="noreferrer"
                 className="hairline rounded-full bg-paper px-6 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] transition-colors hover:bg-yellow"
               >
-                Consult now
+                {c?.cta_secondary ?? "Consult now"}
               </a>
             </div>
           </div>

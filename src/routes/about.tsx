@@ -9,6 +9,7 @@ import { Reveal } from "@/components/Reveal";
 import skyImg from "@/assets/sky.jpg";
 import { PageError } from "@/components/PageError";
 import { getPartners, getProjects } from "@/lib/content.functions";
+import { useSiteContext } from "@/hooks/useSiteContext";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -34,6 +35,8 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   const { projects, partners } = Route.useLoaderData();
+  const { site } = useSiteContext();
+  const c = site.landing_page_content?.about_page;
 
   return (
     <>
@@ -43,12 +46,13 @@ function AboutPage() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h1 className="font-sans text-[clamp(2.4rem,9vw,6rem)] font-bold uppercase leading-[0.9] tracking-tight">
-              About <span className="marker font-serif italic lowercase">us</span>
+              {c?.hero_title_start ?? "About"}{" "}
+              <span className="marker font-serif italic lowercase">{c?.hero_title_highlight ?? "us"}</span>
             </h1>
           </Reveal>
         </div>
       </section>
-      <Marquee>Custom merchandise &amp; apparel</Marquee>
+      <Marquee>{c?.marquee_text ?? "Custom merchandise & apparel"}</Marquee>
       <AboutSection />
       <WhyMarkasMerchan />
       <DesignConsultation />

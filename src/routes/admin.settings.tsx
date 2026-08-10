@@ -181,7 +181,7 @@ function AdminSettings() {
             className="data-[state=active]:bg-ink data-[state=active]:text-paper font-bold text-xs rounded-sm"
           >
             <LayoutTemplate className="h-4 w-4 mr-2" />
-            Konten Landing Page
+            Konten Halaman (Home/Product/About/Contact)
           </TabsTrigger>
         </TabsList>
 
