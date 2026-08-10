@@ -75,7 +75,49 @@ export type LandingPageContent = {
   marquee: {
     text: string;
   };
+  hero: {
+    badge: string;
+    quote: string;
+    cta_primary: string;
+    cta_secondary: string;
+    marquee_text: string;
+  };
+  about_page: {
+    hero_title_start: string;
+    hero_title_highlight: string;
+    marquee_text: string;
+    title_start: string;
+    title_highlight: string;
+    paragraph_1: string;
+    paragraph_2: string;
+    image_1: string | null;
+    image_2: string | null;
+    serve_title: string;
+    serve_items: string[];
+    how_title: string;
+    how_description: string;
+  };
+  products_page: {
+    hero_title_start: string;
+    hero_title_highlight: string;
+    description: string;
+    marquee_text: string;
+  };
+  contact_page: {
+    hero_title_start: string;
+    hero_title_highlight: string;
+    card_title_start: string;
+    card_title_highlight: string;
+    description: string;
+    wa_button_text: string;
+    ig_button_text: string;
+    info_title: string;
+    image: string | null;
+    closing_start: string;
+    closing_highlight: string;
+  };
 };
+
 
 export type SiteSettings = {
   brand_name: string;
