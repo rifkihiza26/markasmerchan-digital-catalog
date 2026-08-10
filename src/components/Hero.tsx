@@ -47,10 +47,10 @@ export function Hero() {
             </p>
 
             <p className="marker-blue mx-auto mt-6 inline-block font-sans text-sm sm:text-base">
-              {c?.badge ?? site.description}
+              {site.hero_subtitle || c?.badge || site.description}
             </p>
             <p className="mx-auto mt-3 max-w-md font-serif text-lg italic leading-snug sm:text-xl">
-              {c?.quote ?? site.tagline}
+              {site.hero_title || c?.quote || site.tagline}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
