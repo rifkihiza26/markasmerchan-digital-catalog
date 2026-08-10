@@ -51,6 +51,7 @@ export type LandingPageContent = {
     card_title_start: string;
     card_title_highlight: string;
     card_description: string;
+    image: string | null;
   };
   why: {
     title_start: string;
