@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   useAdminSiteSettings,
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/admin/settings")({
 });
 
 function AdminSettings() {
+  const router = useRouter();
   const { data: siteSettings, isLoading: loadingSite } = useAdminSiteSettings();
   const { data: contactSettings, isLoading: loadingContact } = useAdminContactSettings();
 
@@ -96,6 +97,7 @@ function AdminSettings() {
         hero_image_3: heroImage3.trim() || null,
       } as any);
       toast.success("Pengaturan situs & foto hero berhasil disimpan!");
+      router.invalidate();
     } catch (err: any) {
       toast.error(err.message || "Gagal menyimpan pengaturan situs.");
     }
@@ -108,6 +110,7 @@ function AdminSettings() {
         landing_page_content: content
       } as any);
       toast.success("Konten landing page berhasil disimpan!");
+      router.invalidate();
     } catch (err: any) {
       toast.error(err.message || "Gagal menyimpan konten landing page.");
     }
@@ -126,6 +129,7 @@ function AdminSettings() {
         google_maps_url: googleMapsUrl.trim() || null,
       });
       toast.success("Informasi kontak berhasil disimpan!");
+      router.invalidate();
     } catch (err: any) {
       toast.error(err.message || "Gagal menyimpan kontak.");
     }
