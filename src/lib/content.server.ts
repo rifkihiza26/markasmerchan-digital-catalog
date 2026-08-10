@@ -137,10 +137,11 @@ export async function loadSiteContext(): Promise<SiteContext> {
         email: site?.email ?? null,
         address: site?.address ?? null,
         footer_text: site?.footer_text || SITE_FALLBACK.footer_text,
-        landing_page_content: {
-          ...SITE_FALLBACK.landing_page_content,
-          ...((site?.landing_page_content as any) ?? {}),
-        },
+        landing_page_content: deepMerge(
+          SITE_FALLBACK.landing_page_content,
+          (site?.landing_page_content as any) ?? {},
+        ),
+
 
       },
       contact: {
