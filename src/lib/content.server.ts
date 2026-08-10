@@ -1,5 +1,5 @@
 import { createPublicClient } from "./supabase-public.server";
-import { SITE_CONTEXT_FALLBACK, SITE_FALLBACK, CONTACT_FALLBACK } from "./content-defaults";
+import { SITE_CONTEXT_FALLBACK, SITE_FALLBACK, CONTACT_FALLBACK, deepMerge } from "./content-defaults";
 import type {
   CatalogCategory,
   PublicPartner,
