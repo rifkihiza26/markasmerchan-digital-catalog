@@ -117,7 +117,7 @@ function AdminSettings() {
     e.preventDefault();
     try {
       await updateContactSettings.mutateAsync({
-        id: contactSettings?.id,
+        ...(contactSettings?.id ? { id: contactSettings.id } : {}),
         whatsapp_number: whatsappNumber.trim() || null,
         email: email.trim() || null,
         address: address.trim() || null,
@@ -181,7 +181,7 @@ function AdminSettings() {
             className="data-[state=active]:bg-ink data-[state=active]:text-paper font-bold text-xs rounded-sm"
           >
             <LayoutTemplate className="h-4 w-4 mr-2" />
-            Konten Landing Page
+            Konten Halaman (Home/Product/About/Contact)
           </TabsTrigger>
         </TabsList>
 

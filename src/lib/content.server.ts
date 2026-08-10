@@ -1,5 +1,5 @@
 import { createPublicClient } from "./supabase-public.server";
-import { SITE_CONTEXT_FALLBACK, SITE_FALLBACK, CONTACT_FALLBACK } from "./content-defaults";
+import { SITE_CONTEXT_FALLBACK, SITE_FALLBACK, CONTACT_FALLBACK, deepMerge } from "./content-defaults";
 import type {
   CatalogCategory,
   PublicPartner,
@@ -137,7 +137,12 @@ export async function loadSiteContext(): Promise<SiteContext> {
         email: site?.email ?? null,
         address: site?.address ?? null,
         footer_text: site?.footer_text || SITE_FALLBACK.footer_text,
-        landing_page_content: (site?.landing_page_content as any) ?? SITE_FALLBACK.landing_page_content,
+        landing_page_content: deepMerge(
+          SITE_FALLBACK.landing_page_content,
+          (site?.landing_page_content as any) ?? {},
+        ),
+
+
       },
       contact: {
         whatsapp_number: contact?.whatsapp_number ?? site?.whatsapp_number ?? null,

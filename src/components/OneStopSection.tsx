@@ -39,7 +39,7 @@ export function OneStopSection() {
 
         <Reveal delay={120} className="relative">
           <div className="absolute -left-4 -top-8 hidden w-28 sm:block">
-            <PhotoCard alt="Catalog spread" caption="Details.jpg" rot={-5} placeholder="CATALOG PHOTO" />
+            <PhotoCard src={content.image || undefined} alt="Catalog spread" caption="Details.jpg" rot={-5} placeholder="CATALOG PHOTO" />
           </div>
           <NoteCard
             rot={1.5}

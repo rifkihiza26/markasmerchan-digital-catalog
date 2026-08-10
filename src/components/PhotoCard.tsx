@@ -15,9 +15,9 @@ export function PhotoCard({
   placeholder = "ASSET NEEDED",
   float = false,
 }: {
-  src?: string | null;
+  src?: string | null | undefined;
   alt: string;
-  caption?: string | null;
+  caption?: string | null | undefined;
   rot?: number;
   className?: string;
   ratio?: string;

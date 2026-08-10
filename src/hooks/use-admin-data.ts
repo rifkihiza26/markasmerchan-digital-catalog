@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { TablesInsert, TablesUpdate } from "@/integrations/supabase/types";
+import { uploadMediaFile, MEDIA_BUCKET } from "@/lib/storage";
 
 // ==================== PRODUCTS ====================
 export function useAdminProducts() {
@@ -290,7 +291,6 @@ export function useAdminSiteSettings() {
       const { data, error } = await supabase
         .from("site_settings")
         .select("*")
-        .order("created_at", { ascending: true })
         .limit(1)
         .maybeSingle();
 
@@ -310,7 +310,6 @@ export function useUpdateSiteSettings() {
         const { data: existing } = await supabase
           .from("site_settings")
           .select("id")
-          .order("created_at", { ascending: true })
           .limit(1)
           .maybeSingle();
         if (existing?.id) {
@@ -351,7 +350,6 @@ export function useAdminContactSettings() {
       const { data, error } = await supabase
         .from("contact_settings")
         .select("*")
-        .order("created_at", { ascending: true })
         .limit(1)
         .maybeSingle();
 
@@ -370,7 +368,6 @@ export function useUpdateContactSettings() {
         const { data: existing } = await supabase
           .from("contact_settings")
           .select("id")
-          .order("created_at", { ascending: true })
           .limit(1)
           .maybeSingle();
         if (existing?.id) {
@@ -427,35 +424,17 @@ export function useUploadMediaAsset() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ file, folder = "uploads" }: { file: File; folder?: string }) => {
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Math.random().toString(36).substring(2, 9)}_${Date.now()}.${fileExt}`;
-      const filePath = `${folder}/${fileName}`;
+      const { path, url } = await uploadMediaFile(file, folder);
 
-      // Upload file to Supabase storage bucket 'media'
-      const { error: uploadError } = await supabase.storage
-        .from("media")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: true,
-        });
-
-      if (uploadError) {
-        console.warn("Storage upload warning, saving asset metadata record", uploadError);
-      }
-
-      const { data: publicUrlData } = supabase.storage.from("media").getPublicUrl(filePath);
-      const publicUrl = publicUrlData?.publicUrl || URL.createObjectURL(file);
-
-      // Create record in media_assets table
       const { data, error } = await supabase
         .from("media_assets")
         .insert({
           file_name: file.name,
-          path: filePath,
-          public_url: publicUrl,
+          path,
+          public_url: url,
           mime_type: file.type,
           size_bytes: file.size,
-          folder: folder,
+          folder,
         })
         .select()
         .maybeSingle();
@@ -474,7 +453,7 @@ export function useDeleteMediaAsset() {
   return useMutation({
     mutationFn: async ({ id, path }: { id: string; path?: string }) => {
       if (path) {
-        await supabase.storage.from("media").remove([path]);
+        await supabase.storage.from(MEDIA_BUCKET).remove([path]);
       }
       const { error } = await supabase.from("media_assets").delete().eq("id", id);
       if (error) throw error;

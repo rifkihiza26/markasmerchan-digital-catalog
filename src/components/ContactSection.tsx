@@ -7,8 +7,10 @@ import { instagramHandle } from "@/lib/content-defaults";
 const NOT_SET = "Belum diisi";
 
 export function ContactSection() {
-  const { contact } = useSiteContext();
+  const { contact, site } = useSiteContext();
   const wa = useWaLink();
+  const c = site.landing_page_content?.contact_page;
+  if (!c) return null;
 
   return (
     <section aria-labelledby="contact-title" className="grain bg-red px-4 py-20 text-paper sm:py-28">
@@ -19,12 +21,11 @@ export function ContactSection() {
             className="max-w-md text-ink"
             title={
               <h2 id="contact-title" className="font-sans text-3xl font-bold">
-                Contact <span className="marker font-serif italic">Us</span>
+                {c.card_title_start} <span className="marker font-serif italic">{c.card_title_highlight}</span>
               </h2>
             }
           >
-            Ready to make something memorable? Kabarin kebutuhan merch lo, kami bantu dari
-            konsultasi sampai produksi.
+            {c.description}
             <div className="mt-6 flex flex-wrap gap-2">
               <a
                 href={wa}
@@ -32,7 +33,7 @@ export function ContactSection() {
                 rel="noreferrer"
                 className="hairline rounded-full bg-ink px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-paper"
               >
-                WhatsApp us
+                {c.wa_button_text}
               </a>
               {contact.instagram_url ? (
                 <a
@@ -41,7 +42,7 @@ export function ContactSection() {
                   rel="noreferrer"
                   className="hairline rounded-full bg-yellow px-5 py-2.5 font-sans text-[11px] font-bold uppercase tracking-[0.16em]"
                 >
-                  Instagram
+                  {c.ig_button_text}
                 </a>
               ) : null}
             </div>
@@ -49,7 +50,7 @@ export function ContactSection() {
         </Reveal>
 
         <Reveal delay={100}>
-          <h3 className="font-sans text-xl font-bold">Informasi kontak</h3>
+          <h3 className="font-sans text-xl font-bold">{c.info_title}</h3>
           <dl className="mt-5 space-y-4 font-sans text-sm">
             <div>
               <dt className="font-bold uppercase tracking-[0.16em] text-paper/70">WhatsApp</dt>
@@ -76,7 +77,7 @@ export function ContactSection() {
           </dl>
 
           <div className="mt-10 hidden w-40 sm:block">
-            <PhotoCard alt="Brand photo" caption="slay.png" rot={3} placeholder="BRAND PHOTO" />
+            <PhotoCard src={c.image || undefined} alt="Brand photo" caption="slay.png" rot={3} placeholder="BRAND PHOTO" />
           </div>
         </Reveal>
       </div>
@@ -84,7 +85,7 @@ export function ContactSection() {
       <div className="mx-auto mt-20 max-w-6xl">
         <Reveal>
           <p className="font-sans text-[clamp(2.2rem,9vw,6rem)] font-bold uppercase leading-[0.9] tracking-tight">
-            See u in the <span className="font-serif italic lowercase">next step</span>
+            {c.closing_start} <span className="font-serif italic lowercase">{c.closing_highlight}</span>
           </p>
         </Reveal>
       </div>

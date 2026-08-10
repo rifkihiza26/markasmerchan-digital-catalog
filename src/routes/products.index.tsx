@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { PageError } from "@/components/PageError";
 import { getCatalog } from "@/lib/content.functions";
 import skyImg from "@/assets/sky.jpg";
+import { useSiteContext } from "@/hooks/useSiteContext";
 
 export const Route = createFileRoute("/products/")({
   loader: async () => ({ categories: await getCatalog() }),
@@ -29,6 +30,8 @@ export const Route = createFileRoute("/products/")({
 
 function ProductsPage() {
   const { categories } = Route.useLoaderData();
+  const { site } = useSiteContext();
+  const c = site.landing_page_content?.products_page;
 
   return (
     <>
@@ -38,16 +41,16 @@ function ProductsPage() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h1 className="font-sans text-[clamp(2.4rem,9vw,6rem)] font-bold uppercase leading-[0.9] tracking-tight">
-              Our <span className="marker font-serif italic lowercase">product</span>
+              {c?.hero_title_start ?? "Our"}{" "}
+              <span className="marker font-serif italic lowercase">{c?.hero_title_highlight ?? "product"}</span>
             </h1>
             <p className="mt-5 max-w-md font-sans text-base leading-relaxed text-foreground/80">
-              Semua produk di bawah ini diambil dari katalog MarkasMerchan. Klik produk untuk lihat
-              detail dan konsultasi.
+              {c?.description}
             </p>
           </Reveal>
         </div>
       </section>
-      <Marquee>Apparel · Merchandise · Flower</Marquee>
+      <Marquee>{c?.marquee_text ?? "Apparel · Merchandise · Flower"}</Marquee>
       <ProductSection categories={categories} />
       <DesignConsultation />
       <BulkOrder />
