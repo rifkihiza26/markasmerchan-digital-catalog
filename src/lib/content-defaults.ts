@@ -59,10 +59,10 @@ export const SITE_FALLBACK: SiteSettings = {
       text: "slay & serve"
     },
     hero: {
-      badge: "Custom Merchandise & Apparel",
-      quote: "“Satu Tempat, Semua Kebutuhan Merch Lo”",
-      cta_primary: "Explore our product",
-      cta_secondary: "Consult now",
+      badge: "Partner Custom Merch & Apparel Terpercaya untuk Kampus, Event, & Corporate",
+      quote: "Satu Tempat, Semua Kebutuhan Merch Lo — Hasil rapi, Tepat Waktu, Bebas Ribet",
+      cta_primary: "Lihat Katalog Produk",
+      cta_secondary: "Gratis konsultasi desain",
       marquee_text: "Satu tempat, semua kebutuhan merch lo"
     },
     about_page: {
