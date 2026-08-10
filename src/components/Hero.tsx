@@ -58,7 +58,7 @@ export function Hero() {
                 to="/products"
                 className="hairline shadow-cut rounded-full bg-red px-6 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] text-paper transition-transform hover:-translate-y-0.5"
               >
-                {c?.cta_primary ?? "Explore our product"}
+                {c?.cta_primary === "Explore our product" ? "Lihat Katalog Produk" : (c?.cta_primary ?? "Lihat Katalog Produk")}
               </Link>
               <a
                 href={wa}
@@ -66,7 +66,7 @@ export function Hero() {
                 rel="noreferrer"
                 className="hairline rounded-full bg-paper px-6 py-3 font-sans text-xs font-bold uppercase tracking-[0.16em] transition-colors hover:bg-yellow"
               >
-                {c?.cta_secondary ?? "Consult now"}
+                {c?.cta_secondary === "Consult now" ? "Gratis konsultasi desain" : (c?.cta_secondary ?? "Gratis konsultasi desain")}
               </a>
             </div>
           </div>
