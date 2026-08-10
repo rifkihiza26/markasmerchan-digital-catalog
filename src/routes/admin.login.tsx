@@ -126,11 +126,7 @@ function AdminLogin() {
             </button>
           </form>
 
-          <div className="pt-3 border-t border-ink/10 text-center">
-            <p className="text-[11px] text-muted-foreground">
-              Terhubung dengan database Supabase di Lovable Cloud.
-            </p>
-          </div>
+
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
