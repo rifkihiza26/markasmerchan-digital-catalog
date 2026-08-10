@@ -25,7 +25,8 @@ export const SITE_FALLBACK: SiteSettings = {
       labels: ["Apparel", "Merchandise", "Flower"],
       card_title_start: "Lengkap &",
       card_title_highlight: "praktis",
-      card_description: "Nggak perlu pindah-pindah vendor. Konsultasi, desain, produksi — semua jalan dari satu markas."
+      card_description: "Nggak perlu pindah-pindah vendor. Konsultasi, desain, produksi — semua jalan dari satu markas.",
+      image: null
     },
     why: {
       title_start: "Why",
@@ -56,6 +57,47 @@ export const SITE_FALLBACK: SiteSettings = {
     },
     marquee: {
       text: "slay & serve"
+    },
+    hero: {
+      badge: "Custom Merchandise & Apparel",
+      quote: "“Satu Tempat, Semua Kebutuhan Merch Lo”",
+      cta_primary: "Explore our product",
+      cta_secondary: "Consult now",
+      marquee_text: "Satu tempat, semua kebutuhan merch lo"
+    },
+    about_page: {
+      hero_title_start: "About",
+      hero_title_highlight: "us",
+      marquee_text: "Custom merchandise & apparel",
+      title_start: "About",
+      title_highlight: "MarkasMerchan",
+      paragraph_1: "MarkasMerchan adalah one stop solution untuk custom merchandise & apparel — melayani kebutuhan kampus, organisasi, event, corporate, dan komunitas.",
+      paragraph_2: "",
+      image_1: null,
+      image_2: null,
+      serve_title: "Siapa yang kami layani",
+      serve_items: ["Kampus", "Organisasi", "Event", "Corporate", "Komunitas"],
+      how_title: "Cara kerja kami",
+      how_description: "Konsultasi → desain & mockup → produksi → kirim. Proses jelas, harga transparan, gampang dihubungi."
+    },
+    products_page: {
+      hero_title_start: "Our",
+      hero_title_highlight: "product",
+      description: "Semua produk di bawah ini diambil dari katalog MarkasMerchan. Klik produk untuk lihat detail dan konsultasi.",
+      marquee_text: "Apparel · Merchandise · Flower"
+    },
+    contact_page: {
+      hero_title_start: "Ready to make something",
+      hero_title_highlight: "memorable?",
+      card_title_start: "Contact",
+      card_title_highlight: "Us",
+      description: "Ready to make something memorable? Kabarin kebutuhan merch lo, kami bantu dari konsultasi sampai produksi.",
+      wa_button_text: "WhatsApp us",
+      ig_button_text: "Instagram",
+      info_title: "Informasi kontak",
+      image: null,
+      closing_start: "See u in the",
+      closing_highlight: "next step"
     }
   },
 };
@@ -73,6 +115,18 @@ export const SITE_CONTEXT_FALLBACK: SiteContext = {
   site: SITE_FALLBACK,
   contact: CONTACT_FALLBACK,
 };
+
+/** Recursively fills missing keys from `fallback` (arrays are replaced wholesale). */
+export function deepMerge<T>(fallback: T, override: any): T {
+  if (override === null || override === undefined) return fallback;
+  if (Array.isArray(fallback) || typeof fallback !== "object") return override as T;
+  if (typeof override !== "object" || Array.isArray(override)) return fallback;
+  const out: any = { ...(fallback as any) };
+  for (const key of Object.keys(override)) {
+    out[key] = deepMerge((fallback as any)[key], override[key]);
+  }
+  return out as T;
+}
 
 export const CONTENT_NEEDED = "[CONTENT FROM CATALOG NEEDED]";
 
