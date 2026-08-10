@@ -12,6 +12,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { getCatalog, getPartners, getProjects } from "@/lib/content.functions";
 import { PageError } from "@/components/PageError";
 import type { CatalogCategory, PublicProduct } from "@/lib/content-types";
+import { useSiteContext } from "@/hooks/useSiteContext";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { categories, projects, partners } = Route.useLoaderData();
+  const { site } = useSiteContext();
   const featured = categories.map((c: CatalogCategory) => ({
     ...c,
     products: c.products.filter((p: PublicProduct) => p.is_featured).length
@@ -51,7 +53,7 @@ function Index() {
   return (
     <>
       <Hero />
-      <Marquee>Satu tempat, semua kebutuhan merch lo</Marquee>
+      <Marquee>{site.landing_page_content?.hero?.marquee_text ?? "Satu tempat, semua kebutuhan merch lo"}</Marquee>
       <OneStopSection />
       <ProductSection categories={featured} limitPerCategory={4} />
       <WhyMarkasMerchan />
