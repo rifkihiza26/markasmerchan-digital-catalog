@@ -15,10 +15,17 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
       new Headers(init.headers).forEach((value, key) => headers.set(key, value));
     }
 
+    // Opaque sb_ keys are not JWTs, so they must not be sent as a bearer token.
+    // BUT the signed-in user's access token MUST be kept, otherwise every request
+    // hits PostgREST/Storage as `anon` and RLS (is_admin(auth.uid())) fails.
     if (isNewSupabaseApiKey(supabaseKey)) {
-      headers.delete('Authorization');
-      headers.delete('authorization');
+      const auth = headers.get('Authorization') ?? headers.get('authorization');
+      if (!auth || auth === `Bearer ${supabaseKey}` || auth === supabaseKey) {
+        headers.delete('Authorization');
+        headers.delete('authorization');
+      }
     }
+
 
     headers.set('apikey', supabaseKey);
     return fetch(input, { ...init, headers });
