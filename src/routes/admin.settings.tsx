@@ -66,6 +66,7 @@ function AdminSettings() {
       setHeroImage1(raw.hero_image_1 || "");
       setHeroImage2(raw.hero_image_2 || "");
       setHeroImage3(raw.hero_image_3 || "");
+      setContactImage(raw.landing_page_content?.contact_page?.image || "");
     }
   }, [siteSettings]);
 
