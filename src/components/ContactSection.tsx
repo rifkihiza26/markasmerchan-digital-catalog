@@ -76,7 +76,7 @@ export function ContactSection() {
             ) : null}
           </dl>
 
-          <div className="mt-10 hidden w-40 sm:block">
+          <div className="mt-10 w-40">
             <PhotoCard src={c.image || undefined} alt="Brand photo" caption="slay.png" rot={3} placeholder="BRAND PHOTO" />
           </div>
         </Reveal>

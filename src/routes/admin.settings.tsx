@@ -48,6 +48,7 @@ function AdminSettings() {
   const [businessHours, setBusinessHours] = useState("");
   const [instagramUrl, setInstagramUrl] = useState("");
   const [googleMapsUrl, setGoogleMapsUrl] = useState("");
+  const [contactImage, setContactImage] = useState("");
 
   useEffect(() => {
     if (siteSettings) {
@@ -65,6 +66,7 @@ function AdminSettings() {
       setHeroImage1(raw.hero_image_1 || "");
       setHeroImage2(raw.hero_image_2 || "");
       setHeroImage3(raw.hero_image_3 || "");
+      setContactImage(raw.landing_page_content?.contact_page?.image || "");
     }
   }, [siteSettings]);
 
@@ -128,6 +130,14 @@ function AdminSettings() {
         instagram_url: instagramUrl.trim() || null,
         google_maps_url: googleMapsUrl.trim() || null,
       });
+      const lpc = ((siteSettings as any)?.landing_page_content ?? {}) as any;
+      await updateSiteSettings.mutateAsync({
+        id: siteSettings?.id,
+        landing_page_content: {
+          ...lpc,
+          contact_page: { ...(lpc.contact_page ?? {}), image: contactImage.trim() || null },
+        },
+      } as any);
       toast.success("Informasi kontak berhasil disimpan!");
       router.invalidate();
     } catch (err: any) {
@@ -421,6 +431,16 @@ function AdminSettings() {
                 onChange={(e) => setGoogleMapsUrl(e.target.value)}
                 placeholder="https://maps.google.com/..."
                 className="bg-note border-ink/20 text-ink"
+              />
+            </div>
+
+            <div className="pt-4 border-t border-ink/20">
+              <ImageUploadInput
+                label="Foto Section Contact"
+                value={contactImage}
+                onChange={setContactImage}
+                folder="contact"
+                description="Foto brand yang tampil di section kontak halaman depan & halaman Contact."
               />
             </div>
 
