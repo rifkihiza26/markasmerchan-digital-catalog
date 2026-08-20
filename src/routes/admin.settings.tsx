@@ -130,6 +130,14 @@ function AdminSettings() {
         instagram_url: instagramUrl.trim() || null,
         google_maps_url: googleMapsUrl.trim() || null,
       });
+      const lpc = ((siteSettings as any)?.landing_page_content ?? {}) as any;
+      await updateSiteSettings.mutateAsync({
+        id: siteSettings?.id,
+        landing_page_content: {
+          ...lpc,
+          contact_page: { ...(lpc.contact_page ?? {}), image: contactImage.trim() || null },
+        },
+      } as any);
       toast.success("Informasi kontak berhasil disimpan!");
       router.invalidate();
     } catch (err: any) {
