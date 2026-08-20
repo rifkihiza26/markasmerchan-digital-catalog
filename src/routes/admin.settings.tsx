@@ -434,6 +434,16 @@ function AdminSettings() {
               />
             </div>
 
+            <div className="pt-4 border-t border-ink/20">
+              <ImageUploadInput
+                label="Foto Section Contact"
+                value={contactImage}
+                onChange={setContactImage}
+                folder="contact"
+                description="Foto brand yang tampil di section kontak halaman depan & halaman Contact."
+              />
+            </div>
+
             <div className="pt-4 flex justify-end">
               <button
                 type="submit"
