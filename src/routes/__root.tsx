@@ -80,26 +80,36 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async () => getSiteContext(),
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MarkasMerchan — Custom Merchandise & Apparel" },
-      { name: "description", content: "Satu Tempat, Semua Kebutuhan Merch Lo." },
-      { name: "author", content: "MarkasMerchan" },
-      { property: "og:title", content: "MarkasMerchan — Custom Merchandise & Apparel" },
-      { property: "og:description", content: "Satu Tempat, Semua Kebutuhan Merch Lo." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const site = loaderData?.site;
+    const title = site?.brand_name 
+      ? `${site.brand_name} — ${site.tagline || 'Custom Merchandise'}`
+      : "MarkasMerchan — Custom Merchandise & Apparel";
+      
+    const description = site?.description || site?.tagline || "Satu Tempat, Semua Kebutuhan Merch Lo.";
+    
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title },
+        { name: "description", content: description },
+        { name: "author", content: site?.brand_name || "MarkasMerchan" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        ...(site?.logo_url ? [{ property: "og:image", content: site.logo_url }] : []),
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [
+        {
+          rel: "stylesheet",
+          href: appCss,
+        },
+        { rel: "icon", href: site?.favicon_url || "/favicon.svg" },
+      ],
+    };
+  },
 
   shellComponent: RootShell,
   component: RootComponent,
