@@ -227,16 +227,8 @@ export function LandingPageSettingsForm({
 
       {/* Hero Section */}
       <div className="space-y-4 pt-4 border-t border-ink/20">
-        <h2 className="text-base font-bold text-ink border-b border-ink/20 pb-2">Hero (Beranda)</h2>
+        <h2 className="text-base font-bold text-ink border-b border-ink/20 pb-2">Hero (Tombol & Teks Berjalan)</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold text-ink/80">Badge Kecil</Label>
-            <Input value={content.hero.badge} onChange={e => updateNested("hero", "badge", e.target.value)} className="bg-note border-ink/20 text-ink" />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold text-ink/80">Kutipan / Tagline</Label>
-            <Input value={content.hero.quote} onChange={e => updateNested("hero", "quote", e.target.value)} className="bg-note border-ink/20 text-ink" />
-          </div>
           <div className="space-y-2">
             <Label className="text-xs font-semibold text-ink/80">Teks Tombol Utama</Label>
             <Input value={content.hero.cta_primary} onChange={e => updateNested("hero", "cta_primary", e.target.value)} className="bg-note border-ink/20 text-ink" />

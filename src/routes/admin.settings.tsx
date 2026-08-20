@@ -247,21 +247,21 @@ function AdminSettings() {
               </h2>
 
               <div className="space-y-2">
-                <Label className="text-xs font-semibold text-ink/80">Judul Utama (Hero Title)</Label>
+                <Label className="text-xs font-semibold text-ink/80">Tagline Hero (Teks Merah)</Label>
                 <Input
                   value={heroTitle}
                   onChange={(e) => setHeroTitle(e.target.value)}
-                  placeholder="Bikin Merch Impian Lo Tanpa Ribet"
+                  placeholder="Satu Tempat, Semua Kebutuhan Merch Lo"
                   className="bg-note border-ink/20 text-ink"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs font-semibold text-ink/80">Sub-Judul Hero</Label>
+                <Label className="text-xs font-semibold text-ink/80">Badge Hero (Teks Biru Atas)</Label>
                 <Textarea
                   value={heroSubtitle}
                   onChange={(e) => setHeroSubtitle(e.target.value)}
-                  placeholder="Solusi cetak merchandise berkualitas tinggi dengan harga kompetitif..."
+                  placeholder="Partner Custom Merch & Apparel Terpercaya..."
                   rows={2}
                   className="bg-note border-ink/20 text-ink"
                 />
