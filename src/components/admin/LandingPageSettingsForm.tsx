@@ -102,18 +102,68 @@ export function LandingPageSettingsForm({
             <Input value={content.why.title_highlight} onChange={e => updateNested("why", "title_highlight", e.target.value)} className="bg-note border-ink/20 text-ink" />
           </div>
         </div>
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-ink/80">Nilai/Alasan (Format JSON)</Label>
-          <Textarea 
-            value={JSON.stringify(content.why.values, null, 2)} 
-            onChange={e => {
-              try { updateNested("why", "values", JSON.parse(e.target.value)); } catch(e) {} // ignore invalid json while typing
-            }} 
-            className="bg-note border-ink/20 text-ink font-mono text-xs" 
-            rows={10} 
-          />
-          <p className="text-[10px] text-ink/50 mt-1">Pastikan format JSON valid saat menyimpan.</p>
+        <div className="space-y-3">
+          <Label className="text-xs font-semibold text-ink/80">Nilai/Alasan</Label>
+          {content.why.values.map((v, i) => (
+            <div key={i} className="flex flex-wrap items-end gap-2 rounded-sm border border-ink/15 bg-note p-3">
+              <div className="min-w-[200px] flex-1 space-y-1">
+                <Label className="text-[10px] uppercase text-ink/60">Teks</Label>
+                <Input
+                  value={v.title}
+                  onChange={e => {
+                    const values = content.why.values.map((x, j) => j === i ? { ...x, title: e.target.value } : x);
+                    updateNested("why", "values", values);
+                  }}
+                  className="bg-paper border-ink/20 text-ink"
+                />
+              </div>
+              <div className="w-36 space-y-1">
+                <Label className="text-[10px] uppercase text-ink/60">Warna</Label>
+                <select
+                  value={v.color}
+                  onChange={e => {
+                    const values = content.why.values.map((x, j) => j === i ? { ...x, color: e.target.value } : x);
+                    updateNested("why", "values", values);
+                  }}
+                  className="h-9 w-full rounded-sm border border-ink/20 bg-paper px-2 text-sm text-ink"
+                >
+                  <option value="bg-paper">Putih</option>
+                  <option value="bg-sky">Biru</option>
+                  <option value="bg-yellow">Kuning</option>
+                  <option value="bg-red">Merah</option>
+                </select>
+              </div>
+              <div className="w-28 space-y-1">
+                <Label className="text-[10px] uppercase text-ink/60">Kemiringan</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  value={v.rot}
+                  onChange={e => {
+                    const values = content.why.values.map((x, j) => j === i ? { ...x, rot: Number(e.target.value) || 0 } : x);
+                    updateNested("why", "values", values);
+                  }}
+                  className="bg-paper border-ink/20 text-ink"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => updateNested("why", "values", content.why.values.filter((_, j) => j !== i))}
+                className="h-9 rounded-sm border border-ink/20 px-3 text-xs font-semibold text-ink/70 hover:bg-ink/5"
+              >
+                Hapus
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => updateNested("why", "values", [...content.why.values, { title: "", color: "bg-paper", rot: 0 }])}
+            className="rounded-sm border border-ink/30 px-3 py-2 text-xs font-semibold text-ink hover:bg-ink/5"
+          >
+            + Tambah nilai
+          </button>
         </div>
+
       </div>
 
       {/* Consultation Section */}
