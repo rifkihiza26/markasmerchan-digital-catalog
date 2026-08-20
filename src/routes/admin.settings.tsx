@@ -48,6 +48,7 @@ function AdminSettings() {
   const [businessHours, setBusinessHours] = useState("");
   const [instagramUrl, setInstagramUrl] = useState("");
   const [googleMapsUrl, setGoogleMapsUrl] = useState("");
+  const [contactImage, setContactImage] = useState("");
 
   useEffect(() => {
     if (siteSettings) {
