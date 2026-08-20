@@ -49,6 +49,8 @@ function AdminSettings() {
   // Hero fields
   const [heroTitle, setHeroTitle] = useState("");
   const [heroSubtitle, setHeroSubtitle] = useState("");
+  const [heroCtaPrimary, setHeroCtaPrimary] = useState("");
+  const [heroCtaSecondary, setHeroCtaSecondary] = useState("");
   const [heroImage1, setHeroImage1] = useState("");
   const [heroImage2, setHeroImage2] = useState("");
   const [heroImage3, setHeroImage3] = useState("");
@@ -74,6 +76,10 @@ function AdminSettings() {
       setHeroImage1(raw.hero_image_1 || "");
       setHeroImage2(raw.hero_image_2 || "");
       setHeroImage3(raw.hero_image_3 || "");
+      // Load CTA from landing_page_content
+      const lp = raw.landing_page_content;
+      setHeroCtaPrimary(lp?.hero?.cta_primary || "");
+      setHeroCtaSecondary(lp?.hero?.cta_secondary || "");
     }
   }, [siteSettings]);
 
@@ -92,6 +98,8 @@ function AdminSettings() {
   const handleSaveHero = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Save hero images & text
+      const currentLp = (siteSettings as any)?.landing_page_content || {};
       await updateSiteSettings.mutateAsync({
         id: siteSettings?.id,
         hero_title: heroTitle.trim() || null,
@@ -99,6 +107,14 @@ function AdminSettings() {
         hero_image_1: heroImage1.trim() || null,
         hero_image_2: heroImage2.trim() || null,
         hero_image_3: heroImage3.trim() || null,
+        landing_page_content: {
+          ...currentLp,
+          hero: {
+            ...(currentLp?.hero || {}),
+            cta_primary: heroCtaPrimary.trim() || "Lihat Katalog Produk",
+            cta_secondary: heroCtaSecondary.trim() || "Gratis konsultasi desain",
+          }
+        },
       } as any);
       toast.success("Hero section berhasil disimpan!");
       router.invalidate();
@@ -271,8 +287,27 @@ function AdminSettings() {
                 className="bg-note border-ink/20 text-ink"
               />
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold text-ink/80">Teks Tombol Utama</Label>
+                <Input
+                  value={heroCtaPrimary}
+                  onChange={(e) => setHeroCtaPrimary(e.target.value)}
+                  placeholder="Lihat Katalog Produk"
+                  className="bg-note border-ink/20 text-ink"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold text-ink/80">Teks Tombol Kedua (WhatsApp)</Label>
+                <Input
+                  value={heroCtaSecondary}
+                  onChange={(e) => setHeroCtaSecondary(e.target.value)}
+                  placeholder="Gratis konsultasi desain"
+                  className="bg-note border-ink/20 text-ink"
+                />
+              </div>
+            </div>
           </div>
-
           {/* 3 Foto */}
           <div className="space-y-4 pt-2 border-t border-ink/20">
             <h2 className="text-sm font-bold text-ink border-b border-ink/20 pb-2 uppercase tracking-wide">

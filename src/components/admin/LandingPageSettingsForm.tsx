@@ -225,19 +225,10 @@ export function LandingPageSettingsForm({
       </div>
 
 
-      {/* Hero Section */}
+      {/* Hero CTA note */}
       <div className="space-y-4 pt-4 border-t border-ink/20">
-        <h2 className="text-base font-bold text-ink border-b border-ink/20 pb-2">Hero (Tombol & Teks Berjalan)</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold text-ink/80">Teks Tombol Utama</Label>
-            <Input value={content.hero.cta_primary} onChange={e => updateNested("hero", "cta_primary", e.target.value)} className="bg-note border-ink/20 text-ink" />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold text-ink/80">Teks Tombol Kedua (WhatsApp)</Label>
-            <Input value={content.hero.cta_secondary} onChange={e => updateNested("hero", "cta_secondary", e.target.value)} className="bg-note border-ink/20 text-ink" />
-          </div>
-        </div>
+        <h2 className="text-base font-bold text-ink border-b border-ink/20 pb-2">Hero (Teks Berjalan)</h2>
+        <p className="text-xs text-ink/50 italic">💡 Tombol CTA Hero dikelola di menu <strong>Hero Section</strong>.</p>
         <div className="space-y-2">
           <Label className="text-xs font-semibold text-ink/80">Teks Berjalan Beranda</Label>
           <Input value={content.hero.marquee_text} onChange={e => updateNested("hero", "marquee_text", e.target.value)} className="bg-note border-ink/20 text-ink" />
@@ -363,7 +354,7 @@ export function LandingPageSettingsForm({
             <Input value={content.contact_page.info_title} onChange={e => updateNested("contact_page", "info_title", e.target.value)} className="bg-note border-ink/20 text-ink" />
           </div>
         </div>
-        <ImageUploadInput label="Foto Halaman Contact" value={content.contact_page.image || ""} onChange={(v) => updateNested("contact_page", "image", v || null)} folder="contact" description="Foto brand di section kontak." />
+        <p className="text-xs text-ink/50 italic">💡 Foto section kontak dikelola di menu <strong>Kontak &amp; Lokasi</strong>.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-xs font-semibold text-ink/80">Teks Penutup (Awal)</Label>
