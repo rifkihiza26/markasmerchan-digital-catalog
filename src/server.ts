@@ -47,6 +47,41 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      
+      // Serve dynamic sitemap
+      if (url.pathname === "/sitemap.xml") {
+        const { loadCatalog } = await import("./lib/content.server");
+        const baseUrl = url.origin; // Or hardcode https://markasmerchan.com if preferred
+        
+        const routes = ["", "/products", "/about", "/contact"];
+        const catalog = await loadCatalog();
+        const productRoutes = catalog.flatMap(category => 
+          category.products.map(product => `/products/${product.slug}`)
+        );
+
+        const allRoutes = [...routes, ...productRoutes];
+
+        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allRoutes
+  .map((route) => `  <url>
+    <loc>${baseUrl}${route}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>${route === "" ? "daily" : "weekly"}</changefreq>
+    <priority>${route === "" ? "1.0" : route.startsWith("/products/") ? "0.8" : "0.7"}</priority>
+  </url>`)
+  .join("\n")}
+</urlset>`;
+
+        return new Response(sitemap, {
+          headers: {
+            "Content-Type": "application/xml",
+            "Cache-Control": "public, max-age=86400, s-maxage=86400",
+          },
+        });
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
